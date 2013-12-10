@@ -24,14 +24,6 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
-require_once 'VersionControl/Git/Exception.php';
-require_once 'VersionControl/Git/Component.php';
-require_once 'VersionControl/Git/Util/Command.php';
-require_once 'VersionControl/Git/Util/RevListFetcher.php';
-require_once 'VersionControl/Git/Object.php';
-require_once 'VersionControl/Git/Object/Commit.php';
-require_once 'VersionControl/Git/Object/Blob.php';
-require_once 'VersionControl/Git/Object/Tree.php';
 
 /**
  * The OO interface for Git
