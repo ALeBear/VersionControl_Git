@@ -33,6 +33,6 @@
  * @copyright 2010 Kousuke Ebihara
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
-class VersionControl_Git_Exception extends PEAR_Exception
+class VersionControl_Git_Exception extends Exception
 {
 }

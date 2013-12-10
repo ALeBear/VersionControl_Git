@@ -24,16 +24,10 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  */
 
-require_once 'System.php';
-
-require_once 'PEAR/Exception.php';
 require_once 'VersionControl/Git/Exception.php';
-
 require_once 'VersionControl/Git/Component.php';
-
 require_once 'VersionControl/Git/Util/Command.php';
 require_once 'VersionControl/Git/Util/RevListFetcher.php';
-
 require_once 'VersionControl/Git/Object.php';
 require_once 'VersionControl/Git/Object/Commit.php';
 require_once 'VersionControl/Git/Object/Blob.php';
@@ -388,7 +382,7 @@ class VersionControl_Git
     {
         // Guess path to git binary
         if (!$this->gitCommandPath) {
-            $this->gitCommandPath = @System::which('git');
+            $this->gitCommandPath = @$this->which('git');
 
             if (!$this->gitCommandPath) {
                 $message = 'Guessing path to git binary is failed.'
@@ -410,5 +404,59 @@ class VersionControl_Git
     public function setGitCommandPath($path)
     {
         $this->gitCommandPath = $path;
+    }
+
+    /**
+     * Shameless copy of PEAR's System::which() to remove the dependency
+     * @param $program
+     * @param bool $fallback
+     * @return bool|string
+     */
+    protected function which($program, $fallback = false)
+    {
+        // enforce API
+        if (!is_string($program) || '' == $program) {
+            return $fallback;
+        }
+
+        // full path given
+        if (basename($program) != $program) {
+            $path_elements[] = dirname($program);
+            $program = basename($program);
+        } else {
+            // Honor safe mode
+            if (!ini_get('safe_mode') || !$path = ini_get('safe_mode_exec_dir')) {
+                $path = getenv('PATH');
+                if (!$path) {
+                    $path = getenv('Path'); // some OSes are just stupid enough to do this
+                }
+            }
+            $path_elements = explode(PATH_SEPARATOR, $path);
+        }
+
+        if (OS_WINDOWS) {
+            $exe_suffixes = getenv('PATHEXT')
+                ? explode(PATH_SEPARATOR, getenv('PATHEXT'))
+                : array('.exe','.bat','.cmd','.com');
+            // allow passing a command.exe param
+            if (strpos($program, '.') !== false) {
+                array_unshift($exe_suffixes, '');
+            }
+            // is_executable() is not available on windows for PHP4
+            $pear_is_executable = (function_exists('is_executable')) ? 'is_executable' : 'is_file';
+        } else {
+            $exe_suffixes = array('');
+            $pear_is_executable = 'is_executable';
+        }
+
+        foreach ($exe_suffixes as $suff) {
+            foreach ($path_elements as $dir) {
+                $file = $dir . DIRECTORY_SEPARATOR . $program . $suff;
+                if (@$pear_is_executable($file)) {
+                    return $file;
+                }
+            }
+        }
+        return $fallback;
     }
 }
