@@ -1,0 +1,17 @@
+{
+    "name": "alebear/versioncontrol_git",
+    "type": "library",
+    "description": "Fork of PEAR VersionControl_Git that integrates with composer",
+    "keywords": ["php", "git"],
+    "license": "Apache License",
+    "authors": [
+        {
+            "name": "Kousuke Ebihara",
+            "email": "kousuke@co3k.org"
+        },
+        {
+            "name": "Antoine LeBear",
+            "email": "un.singe.en.hiver@gmail.com"
+        }
+    ]
+}
