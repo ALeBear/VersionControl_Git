@@ -13,5 +13,8 @@
             "name": "Antoine LeBear",
             "email": "un.singe.en.hiver@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "classmap": ["VersionControl"]
+    },
 }
