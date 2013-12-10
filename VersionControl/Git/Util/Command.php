@@ -229,7 +229,8 @@ class VersionControl_Git_Util_Command extends VersionControl_Git_Component
 
         $status = trim(proc_close($resource));
         if ($status) {
-            $message = "Some errors in executing git command\n\n"
+            $message = "Some errors in executing git command:\n"
+                     . $command . "\n"
                      . "Output:\n"
                      . $stdout."\n"
                      . "Error:\n"
